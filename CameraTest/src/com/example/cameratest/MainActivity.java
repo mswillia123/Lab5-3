@@ -1,6 +1,7 @@
 package com.example.cameratest;
 // This project is adopted from https://eclass.srv.ualberta.ca/mod/resource/view.php?id=1136415
 import java.io.File;
+import java.net.URI;
 
 import com.example.cameratest.R;
 
@@ -50,28 +51,29 @@ public class MainActivity extends Activity {
 		File folder = new File(path);
 		if (!folder.exists())	
 			folder.mkdir();
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
-		//TODO: Add your code here...
+		String imagePathAndFileName = path + File.separator + String.valueOf(System.currentTimeMillis()) + ".jpg"; //creating filename from path and time and jpg extension
+		File imageFile = new File(imagePathAndFileName); // create the new file
+		imageFileUri = Uri.fromFile(imageFile); // what does this do?
+		
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri); //sending the image file URI to this intent
+		
+		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE); //define request code - comparing results from activity with this code
+		// getting textview and can have results back from activity result
+		
+			
+			
     }
     
     //This method is run after returning back from camera activity:
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { //we want to show what happened in the camera activity, to show the user in the text view
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
 			TextView tv = (TextView)findViewById(R.id.status);
 			
-			if (resultCode == RESULT_OK){
-				//TODO: Add your code here...
-				//TODO: Add your code here...
-				//TODO: Add your code here...
-				//TODO: Add your code here...
-				//TODO: Add your code here...
-				//TODO: Add your code here...
+			if (resultCode == RESULT_OK){ // result back from camera activitiy
+				tv.setText("Photo completed!");
+				ImageButton ib = (ImageButton)findViewById(R.id.TakeAPhoto);
+				ib.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath())); //get stored image and put into image button
 			}
 			else
 				if (resultCode == RESULT_CANCELED){
